@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 2,
+  "auditedAt": "2026-09-11",
+  "currentProductApp": {
+    "logicalBoundary": "product/app/minicode_frontline",
+    "currentSourceRoot": "minicode",
+    "entrySurfaces": [
+      {"path": "minicode/main.py"},
+      {"path": "minicode/headless.py"},
+      {"path": "minicode/readiness.py"},
+      {"path": "minicode/structure_check.py"},
+      {"path": "minicode/provider_smoke.py"}
+    ],
+    "coverageEvidence": [
+      {"path": "tests/test_delivery_surfaces.py"},
+      {"path": "tests/test_network_security.py"},
+      {"path": "minicode/network_safety.py"},
+      {"path": "minicode/permissions.py"},
+      {"path": "Main/MinicodeFrontline/Test/Application/Entry/MiniCodeFrontline.Test.py"},
+      {"path": "Package/EngineeringStructure/Test/Application/Query/StructureCompliance.Test.py"}
+    ]
+  },
+  "materials": [
+    {
+      "path": "benchmarks",
+      "presencePolicy": "required",
+      "identity": "release and runtime evidence",
+      "status": "active-evidence",
+      "callerSummary": "readiness commands validate committed evidence",
+      "replacementTarget": "benchmarks",
+      "retirementCondition": "replace only with an equivalent reproducible evidence store",
+      "observedEntries": [{"path": "benchmarks/release_readiness_results.json"}],
+      "coverageEvidence": [{"path": "tests/test_delivery_surfaces.py"}],
+      "currentCallers": [
+        {"path": "benchmarks/release_readiness.py"},
+        {"path": "benchmarks/runtime_profile_eval.py"},
+        {"path": "minicode/release_readiness.py"}
+      ],
+      "historicalReferences": []
+    },
+    {
+      "path": "Docs",
+      "presencePolicy": "required",
+      "identity": "current and historical engineering documentation",
+      "status": "active-documentation",
+      "callerSummary": "developers and consistency gates consume current documents",
+      "replacementTarget": "Docs/Documentation",
+      "retirementCondition": "not retired while public behavior remains documented here",
+      "observedEntries": [
+        {"path": "Docs/Documentation/STRUCTURE.md"},
+        {"path": "Docs/Documentation/USAGE_GUIDE.md"},
+        {"path": "Docs/Documentation/INTEGRATION_GUIDE.md"}
+      ],
+      "coverageEvidence": [{"path": "tests/test_delivery_surfaces.py"}],
+      "currentCallers": [
+        {"path": "README.md"},
+        {"path": "minicode/structure_check.py"}
+      ],
+      "historicalReferences": [{"path": "Docs/Documentation/superpowers/plans"}]
+    },
+    {
+      "path": "outputs",
+      "presencePolicy": "required",
+      "identity": "normalized evaluation outputs",
+      "status": "active-evidence",
+      "callerSummary": "evaluation tools consume normalized output fixtures",
+      "replacementTarget": "outputs",
+      "retirementCondition": "retire only when all callers use a replacement evidence format",
+      "observedEntries": [{"path": "outputs/paper_a_retrieval_probe_eval"}],
+      "coverageEvidence": [{"path": "benchmarks/release_readiness_results.json"}],
+      "currentCallers": [{"path": "minicode/paper_a_retrieval_probe_eval.py"}],
+      "historicalReferences": []
+    }
+  ],
+  "focusedGates": [
+    {
+      "name": "compileall",
+      "command": "python -m compileall -q minicode tests benchmarks Main Package",
+      "portableFallback": "python3 -m compileall -q minicode tests benchmarks Main Package"
+    },
+    {
+      "name": "product-entry-gates",
+      "command": "python -m pytest -q",
+      "portableFallback": "python3 -m pytest -q"
+    },
+    {
+      "name": "structure-compliance",
+      "command": "python -m minicode.structure_check --root . --hotspots 5 --max-dependency-upstream 4 --check-material-inventory --report .temp/structure-compliance.json",
+      "portableFallback": "python3 -m minicode.structure_check --root . --hotspots 5 --max-dependency-upstream 4 --check-material-inventory --report .temp/structure-compliance.json"
+    },
+    {
+      "name": "structure-compliance-artifact",
+      "command": "python -m minicode.release_readiness --check-structure-compliance-artifact .temp/structure-compliance.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-structure-compliance-artifact .temp/structure-compliance.json"
+    },
+    {
+      "name": "readiness-gate",
+      "command": "python -m minicode.readiness --json --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --json --fail-on blocked"
+    },
+    {
+      "name": "readiness-fallback-examples",
+      "command": "python -m minicode.readiness --examples-out .temp/readiness-fallback-examples.json --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --examples-out .temp/readiness-fallback-examples.json --fail-on blocked"
+    },
+    {
+      "name": "readiness-doctor",
+      "command": "python -m minicode.readiness --doctor-out .temp/readiness-doctor.md --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --doctor-out .temp/readiness-doctor.md --fail-on blocked"
+    },
+    {
+      "name": "readiness-repair-plan",
+      "command": "python -m minicode.readiness --repair-plan-out .temp/readiness-repair-plan.json --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --repair-plan-out .temp/readiness-repair-plan.json --fail-on blocked"
+    },
+    {
+      "name": "readiness-patch-preview",
+      "command": "python -m minicode.readiness --patch-preview-out .temp/readiness-fallback-patch-preview.json --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --patch-preview-out .temp/readiness-fallback-patch-preview.json --fail-on blocked"
+    },
+    {
+      "name": "readiness-bundle",
+      "command": "python -m minicode.readiness --bundle-out .temp/readiness-bundle --fail-on blocked",
+      "portableFallback": "python3 -m minicode.readiness --bundle-out .temp/readiness-bundle --fail-on blocked"
+    },
+    {
+      "name": "readiness-artifact-manifest",
+      "command": "python -m minicode.release_readiness --check-artifact-manifest .temp/readiness-artifact-manifest.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-artifact-manifest .temp/readiness-artifact-manifest.json"
+    },
+    {
+      "name": "readiness-patch-preview-gate",
+      "command": "python -m minicode.release_readiness --check-fallback-patch-preview .temp/readiness-fallback-patch-preview.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-fallback-patch-preview .temp/readiness-fallback-patch-preview.json"
+    },
+    {
+      "name": "readiness-fallback-simulation-gate",
+      "command": "python -m minicode.release_readiness --check-fallback-simulation .temp/readiness-bundle/readiness-fallback-simulations.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-fallback-simulation .temp/readiness-bundle/readiness-fallback-simulations.json"
+    },
+    {
+      "name": "fallback-switch-smoke",
+      "command": "python -m minicode.release_readiness --check-fallback-switch-smoke",
+      "portableFallback": "python3 -m minicode.release_readiness --check-fallback-switch-smoke"
+    },
+    {
+      "name": "readiness-bundle-gate",
+      "command": "python -m minicode.release_readiness --check-readiness-bundle .temp/readiness-bundle",
+      "portableFallback": "python3 -m minicode.release_readiness --check-readiness-bundle .temp/readiness-bundle"
+    },
+    {
+      "name": "release-fallback-evidence-gate",
+      "command": "python -m minicode.release_readiness --check-fallback-evidence benchmarks/release_readiness_results.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-fallback-evidence benchmarks/release_readiness_results.json"
+    },
+    {
+      "name": "release-report-gate",
+      "command": "python -m minicode.release_readiness --check-release-report benchmarks/release_readiness_results.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-release-report benchmarks/release_readiness_results.json"
+    },
+    {
+      "name": "release-markdown-report-gate",
+      "command": "python -m minicode.release_readiness --check-release-markdown benchmarks/release_readiness_results.md --release-json benchmarks/release_readiness_results.json",
+      "portableFallback": "python3 -m minicode.release_readiness --check-release-markdown benchmarks/release_readiness_results.md --release-json benchmarks/release_readiness_results.json"
+    }
+  ]
+}

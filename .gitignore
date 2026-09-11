@@ -1,0 +1,38 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual environments and packaging output
+.venv/
+venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+*.whl
+
+# Local runtime state and generated temporary files
+.temp/
+.mini-code-memory/
+.mini-code-memory-local/
+.mini-code-session-memory/
+
+# Secrets and local environment overrides
+.env
+.env.*
+!.env.example
+
+# Editors and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

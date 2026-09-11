@@ -1,0 +1,7 @@
+{
+  "name": "git-helpers",
+  "version": "1.0.0",
+  "description": "Local helper bundle",
+  "enabled": true,
+  "entrypoint": "bundle.py"
+}

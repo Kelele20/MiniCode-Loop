@@ -1,0 +1,64 @@
+# =============================================================================
+# MiniCode Loop — Docker Compose
+# =============================================================================
+# Inspired by Hermes Agent's flexible deployment model.
+# Supports two modes:
+#   1. cli       — Interactive terminal session (default)
+#   2. headless  — One-shot non-interactive execution
+#
+# Usage:
+#   docker compose run --rm cli
+#   docker compose run --rm -e ANTHROPIC_API_KEY=sk-ant-... cli
+#   docker compose run --rm headless "帮我分析这个项目的结构"
+# =============================================================================
+
+services:
+  # ===========================================================================
+  # Mode 1: Interactive CLI — the classic MiniCode experience
+  # ===========================================================================
+  cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: minicode-loop:latest
+    container_name: minicode-loop-cli
+    stdin_open: true        # docker -i
+    tty: true               # docker -t
+    init: true              # tini for proper signal handling
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+      - MINI_CODE_LOG_LEVEL=${MINI_CODE_LOG_LEVEL:-WARNING}
+    volumes:
+      # Mount workspace (current directory by default)
+      - ${MINI_CODE_WORKSPACE:-.}:/workspace
+      # Persist user-level config, memory, skills across containers
+      - minicode-loop-home:/home/minicode/.mini-code
+    working_dir: /workspace
+
+  # ===========================================================================
+  # Mode 2: Headless — One-shot non-interactive execution
+  # ===========================================================================
+  headless:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: minicode-loop:latest
+    container_name: minicode-loop-headless
+    init: true
+    entrypoint: ["python", "-m", "minicode.headless"]
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-sonnet-4-20250514}
+      - MINI_CODE_LOG_LEVEL=${MINI_CODE_LOG_LEVEL:-WARNING}
+    volumes:
+      - ${MINI_CODE_WORKSPACE:-.}:/workspace
+      - minicode-loop-home:/home/minicode/.mini-code
+    working_dir: /workspace
+
+# =============================================================================
+# Named volumes — persist config, memory, and skills across containers
+# =============================================================================
+volumes:
+  minicode-loop-home:
+    driver: local
