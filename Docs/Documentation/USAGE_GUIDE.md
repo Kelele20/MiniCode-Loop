@@ -10,6 +10,21 @@ minicode-py
 python -m minicode.main
 ```
 
+### 配置文件与密钥
+
+本地 Python 进程不会自动读取项目目录中的 `.env`；`.env.example` 只是变量模板。持久配置应写入用户级 `~/.mini-code/settings.json`，也可以在当前终端设置环境变量：
+
+```json
+{
+  "model": "claude-sonnet-4-20250514",
+  "env": {
+    "ANTHROPIC_API_KEY": "..."
+  }
+}
+```
+
+`python -m minicode.main --install` 可按提示写入用户配置。用户配置位于仓库之外，不要复制到项目目录或提交到 Git；真实密钥只用于需要供应商调用的运行路径。
+
 常用启动选项：
 
 ```powershell

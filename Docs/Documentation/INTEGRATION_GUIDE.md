@@ -2,7 +2,20 @@
 
 ## 模型供应商
 
-MiniCode 通过 `model_registry.py` 选择适配器，通过 `anthropic_adapter.py` 或 `openai_adapter.py` 形成供应商请求。可使用环境变量或 `~/.mini-code/settings.json` 配置 Anthropic、OpenAI、OpenRouter 和 OpenAI 兼容端点。
+MiniCode 通过 `model_registry.py` 选择适配器，通过 `anthropic_adapter.py` 或 `openai_adapter.py` 形成供应商请求。可使用环境变量或用户级 `~/.mini-code/settings.json` 配置 Anthropic、OpenAI、OpenRouter 和 OpenAI 兼容端点；项目目录中的 `.env` 不会被本地 Python 进程自动读取，`.env.example` 仅是变量模板。
+
+用户级配置示例：
+
+```json
+{
+  "model": "claude-sonnet-4-20250514",
+  "env": {
+    "ANTHROPIC_API_KEY": "..."
+  }
+}
+```
+
+可通过 `python -m minicode.main --install` 写入配置。该文件位于仓库之外，真实密钥不得提交到 Git 或复制到项目目录。
 
 示例：
 

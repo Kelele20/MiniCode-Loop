@@ -10,7 +10,22 @@ python -m venv .venv
 python -m pip install -e ".[dev]"
 ```
 
-Linux/macOS 将激活命令替换为 `source .venv/bin/activate`。复制 `.env.example` 仅用于了解变量；本地 Python 进程不会自动读取 `.env`，密钥应通过环境变量或 `python -m minicode.main --install` 写入用户配置。
+Linux/macOS 将激活命令替换为 `source .venv/bin/activate`。
+
+配置不依赖项目目录中的 `.env`：复制 `.env.example` 仅用于了解变量，本地 Python 进程不会自动读取 `.env`。推荐把持久配置写入用户级 `~/.mini-code/settings.json`（Windows 通常为 `C:\Users\<用户名>\.mini-code\settings.json`），或者在当前终端设置环境变量。两种方式都不应把真实密钥提交到仓库。
+
+用户级配置示例（只填入你自己的密钥）：
+
+```json
+{
+  "model": "claude-sonnet-4-20250514",
+  "env": {
+    "ANTHROPIC_API_KEY": "..."
+  }
+}
+```
+
+也可以运行 `python -m minicode.main --install` 按提示写入该用户配置文件。
 
 至少配置一个供应商密钥，例如：
 
